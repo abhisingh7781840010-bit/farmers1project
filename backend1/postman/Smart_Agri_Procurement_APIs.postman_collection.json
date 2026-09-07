@@ -1,0 +1,288 @@
+{
+  "info": {
+    "name": "Smart Agricultural Procurement Management System (Member 2)",
+    "description": "Postman Collection for Queue Management, Farmer Tokens, Procurement Status, Center Availability, Notifications, and ML Integration",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Login (Admin / Staff)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data && jsonData.data.token) {",
+                  "    pm.collectionVariables.set('authToken', jsonData.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@agri.gov.in\",\n  \"password\": \"Admin@12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Profile (/auth/me)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Procurement Centers",
+      "item": [
+        {
+          "name": "GET All Centers (with Queue Size & Availability)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/centers",
+              "host": ["{{baseUrl}}"],
+              "path": ["centers"]
+            }
+          }
+        },
+        {
+          "name": "GET Center Details by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/centers/C001",
+              "host": ["{{baseUrl}}"],
+              "path": ["centers", "C001"]
+            }
+          }
+        },
+        {
+          "name": "GET Center Availability Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/centers/C001/availability",
+              "host": ["{{baseUrl}}"],
+              "path": ["centers", "C001", "availability"]
+            }
+          }
+        },
+        {
+          "name": "GET Center Live Queue",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/centers/C001/queue",
+              "host": ["{{baseUrl}}"],
+              "path": ["centers", "C001", "queue"]
+            }
+          }
+        },
+        {
+          "name": "GET Center Schedule",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/centers/C001/schedule",
+              "host": ["{{baseUrl}}"],
+              "path": ["centers", "C001", "schedule"]
+            }
+          }
+        },
+        {
+          "name": "PUT Update Center Schedule (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dayOfWeek\": 1,\n  \"dayName\": \"Monday\",\n  \"openingTime\": \"08:30\",\n  \"closingTime\": \"18:30\",\n  \"isOperational\": true,\n  \"maxDailyTokens\": 160,\n  \"remarks\": \"Extended hours for wheat harvest peak\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/centers/C001/schedule",
+              "host": ["{{baseUrl}}"],
+              "path": ["centers", "C001", "schedule"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Farmer Tokens & Queue Status",
+      "item": [
+        {
+          "name": "POST Generate Farmer Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"farmerId\": \"F001\",\n  \"centerId\": \"C001\",\n  \"crop\": \"Wheat\",\n  \"quantityKg\": 500\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/farmer/token",
+              "host": ["{{baseUrl}}"],
+              "path": ["farmer", "token"]
+            }
+          }
+        },
+        {
+          "name": "GET Farmer Queue Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/farmer/status/F001",
+              "host": ["{{baseUrl}}"],
+              "path": ["farmer", "status", "F001"]
+            }
+          }
+        },
+        {
+          "name": "POST Cancel Farmer Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tokenNumber\": \"101\",\n  \"reason\": \"Farmer requested cancellation\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/farmer/token/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["farmer", "token", "cancel"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Procurement Workflow",
+      "item": [
+        {
+          "name": "PUT Status: WAITING -> CALLED",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tokenNumber\": \"101\",\n  \"status\": \"CALLED\",\n  \"counterNumber\": 2,\n  \"remarks\": \"Farmer called to counter #2 for verification\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/procurement/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["procurement", "status"]
+            }
+          }
+        },
+        {
+          "name": "PUT Status: CALLED -> IN_PROGRESS",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tokenNumber\": \"101\",\n  \"status\": \"IN_PROGRESS\",\n  \"counterNumber\": 2,\n  \"remarks\": \"Grain moisture testing in progress\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/procurement/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["procurement", "status"]
+            }
+          }
+        },
+        {
+          "name": "PUT Status: IN_PROGRESS -> COMPLETED",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tokenNumber\": \"101\",\n  \"status\": \"COMPLETED\",\n  \"counterNumber\": 2,\n  \"quantityProcuredKg\": 500,\n  \"qualityGrade\": \"Grade A\",\n  \"pricePerQuintal\": 2275,\n  \"remarks\": \"Procurement approved at MSP\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/procurement/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["procurement", "status"]
+            }
+          }
+        },
+        {
+          "name": "GET Procurement History / Audits",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/procurement/history?centerId=C001",
+              "host": ["{{baseUrl}}"],
+              "path": ["procurement", "history"],
+              "query": [{ "key": "centerId", "value": "C001" }]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

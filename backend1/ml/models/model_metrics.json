@@ -1,0 +1,26 @@
+{
+  "best_model": "GradientBoosting",
+  "models": {
+    "LinearRegression": {
+      "MAE_minutes": 11.616,
+      "RMSE_minutes": 16.559,
+      "R2": 0.8175
+    },
+    "DecisionTree": {
+      "MAE_minutes": 7.153,
+      "RMSE_minutes": 11.562,
+      "R2": 0.911
+    },
+    "RandomForest": {
+      "MAE_minutes": 4.859,
+      "RMSE_minutes": 7.295,
+      "R2": 0.9646
+    },
+    "GradientBoosting": {
+      "MAE_minutes": 2.105,
+      "RMSE_minutes": 3.096,
+      "R2": 0.9936
+    }
+  },
+  "note": "Performance is based on the included simulated training dataset, not official government data."
+}

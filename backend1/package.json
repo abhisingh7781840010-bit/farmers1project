@@ -1,0 +1,46 @@
+{
+  "name": "smart-agri-procurement-backend",
+  "version": "1.0.0",
+  "description": "Smart Agricultural Procurement Management System Backend - Queue Management, Farmer Tokens, Center Availability, Real-Time Notifications, and ML Integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node scripts/seed.js",
+    "test": "node tests/api.test.js"
+  },
+  "keywords": [
+    "agriculture",
+    "procurement",
+    "queue-management",
+    "farmer-token",
+    "socketio",
+    "express",
+    "mongodb",
+    "machine-learning"
+  ],
+  "author": "Smart Agri Team",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.2",
+    "morgan": "^1.10.0",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^10.0.0",
+    "socket.io": "^4.7.5",
+    "twilio": "^6.1.0"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.7.5"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "type": "commonjs"
+}

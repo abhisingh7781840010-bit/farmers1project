@@ -1,0 +1,35 @@
+{
+  "name": "farmer-procurement-backend",
+  "version": "1.0.0",
+  "description": "Real-time Queue Management & API module for Farmer Procurement Management System (e-KisanSetu)",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/db/seed.js",
+    "test": "node tests/api.test.js",
+    "ml-mock": "node ml_mock_service/server.js"
+  },
+  "keywords": [
+    "procurement",
+    "farmer",
+    "mandi",
+    "queue-management",
+    "tokens",
+    "real-time",
+    "machine-learning"
+  ],
+  "author": "Backend Engineering Team",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0",
+    "zod": "^3.24.2"
+  }
+}
